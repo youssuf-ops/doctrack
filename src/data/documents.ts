@@ -1,19 +1,17 @@
 import type { Document, DashboardStats } from "../types";
 
-// Dados simulados — estrutura idêntica ao que viria de uma API real
-// Numa aplicação de produção, estes dados viriam de fetch('/api/documents')
 export const MOCK_DOCUMENTS: Document[] = [
   {
     id: "doc-001",
     title: "Q1 2026 Financial Report",
     description:
-      "Quarterly financial summary including revenue, expenses and projections for ShelterZoom internal use.",
+      "Quarterly financial summary including revenue, expenses and projections for internal use.",
     status: "active",
     owner: {
       id: "user-001",
-      name: "Youssuf Abdula",
-      email: "youssuf@albiclick.com",
-      avatar: "YA",
+      name: "James Mercer",
+      email: "james.mercer@doctrack.io",
+      avatar: "JM",
     },
     createdAt: "2026-01-15T09:00:00Z",
     updatedAt: "2026-05-10T14:30:00Z",
@@ -21,43 +19,43 @@ export const MOCK_DOCUMENTS: Document[] = [
     tags: ["finance", "Q1", "internal"],
     fileSize: 2048000,
     fileType: "PDF",
-    sharedWith: ["cfo@company.com", "ceo@company.com"],
+    sharedWith: ["cfo@doctrack.io", "ceo@doctrack.io"],
     isVerified: true,
     history: [
       {
         id: "evt-001",
         action: "created",
         timestamp: "2026-01-15T09:00:00Z",
-        actor: "Youssuf Abdula",
+        actor: "James Mercer",
         details: "Document created and uploaded",
       },
       {
         id: "evt-002",
         action: "shared",
         timestamp: "2026-01-16T10:00:00Z",
-        actor: "Youssuf Abdula",
+        actor: "James Mercer",
         details: "Shared with CFO and CEO",
       },
       {
         id: "evt-003",
         action: "viewed",
         timestamp: "2026-01-17T11:30:00Z",
-        actor: "cfo@company.com",
+        actor: "cfo@doctrack.io",
         details: "Document viewed",
       },
     ],
   },
   {
     id: "doc-002",
-    title: "Client NDA — TechCorp Partnership",
+    title: "Client NDA — Horizon Partnership",
     description:
-      "Non-disclosure agreement for the TechCorp strategic partnership initiative.",
+      "Non-disclosure agreement for the Horizon Group strategic partnership initiative.",
     status: "shared",
     owner: {
-      id: "user-001",
-      name: "Youssuf Abdula",
-      email: "youssuf@albiclick.com",
-      avatar: "YA",
+      id: "user-002",
+      name: "Sofia Andrade",
+      email: "sofia.andrade@doctrack.io",
+      avatar: "SA",
     },
     createdAt: "2026-03-01T08:00:00Z",
     updatedAt: "2026-03-15T16:00:00Z",
@@ -65,22 +63,22 @@ export const MOCK_DOCUMENTS: Document[] = [
     tags: ["legal", "NDA", "partnership"],
     fileSize: 512000,
     fileType: "DOCX",
-    sharedWith: ["legal@techcorp.com", "partner@techcorp.com"],
+    sharedWith: ["legal@horizongroup.com", "partner@horizongroup.com"],
     isVerified: true,
     history: [
       {
         id: "evt-004",
         action: "created",
         timestamp: "2026-03-01T08:00:00Z",
-        actor: "Youssuf Abdula",
+        actor: "Sofia Andrade",
         details: "NDA document created",
       },
       {
         id: "evt-005",
         action: "shared",
         timestamp: "2026-03-02T09:00:00Z",
-        actor: "Youssuf Abdula",
-        details: "Sent to TechCorp legal team",
+        actor: "Sofia Andrade",
+        details: "Sent to Horizon Group legal team",
       },
     ],
   },
@@ -91,9 +89,9 @@ export const MOCK_DOCUMENTS: Document[] = [
       "Internal product roadmap document for the second half of 2025.",
     status: "expired",
     owner: {
-      id: "user-002",
+      id: "user-003",
       name: "Ana Silva",
-      email: "ana@company.com",
+      email: "ana.silva@doctrack.io",
       avatar: "AS",
     },
     createdAt: "2025-06-01T10:00:00Z",
@@ -128,9 +126,9 @@ export const MOCK_DOCUMENTS: Document[] = [
       "Annual cybersecurity audit conducted by external team. Confidential.",
     status: "pending",
     owner: {
-      id: "user-003",
+      id: "user-004",
       name: "Carlos Matos",
-      email: "carlos@company.com",
+      email: "carlos.matos@doctrack.io",
       avatar: "CM",
     },
     createdAt: "2026-05-18T14:00:00Z",
@@ -139,7 +137,7 @@ export const MOCK_DOCUMENTS: Document[] = [
     tags: ["security", "audit", "confidential"],
     fileSize: 3072000,
     fileType: "PDF",
-    sharedWith: ["ciso@company.com"],
+    sharedWith: ["ciso@doctrack.io"],
     isVerified: false,
     history: [
       {
@@ -157,9 +155,9 @@ export const MOCK_DOCUMENTS: Document[] = [
     description: "Updated employee handbook with revised remote work policies.",
     status: "active",
     owner: {
-      id: "user-004",
+      id: "user-005",
       name: "Maria Costa",
-      email: "maria@company.com",
+      email: "maria.costa@doctrack.io",
       avatar: "MC",
     },
     createdAt: "2026-02-10T09:00:00Z",
@@ -168,7 +166,7 @@ export const MOCK_DOCUMENTS: Document[] = [
     tags: ["HR", "handbook", "policies"],
     fileSize: 768000,
     fileType: "PDF",
-    sharedWith: ["all@company.com"],
+    sharedWith: ["all@doctrack.io"],
     isVerified: true,
     history: [
       {
@@ -189,8 +187,6 @@ export const MOCK_DOCUMENTS: Document[] = [
   },
 ];
 
-// Função que calcula as stats do dashboard a partir dos documentos
-// Lógica pura — sem side effects, sem chamadas externas
 export function computeDashboardStats(documents: Document[]): DashboardStats {
   return {
     totalDocuments: documents.length,
@@ -201,7 +197,6 @@ export function computeDashboardStats(documents: Document[]): DashboardStats {
   };
 }
 
-// Simula delay de rede — para os hooks TanStack Query parecerem reais
 export function simulateApiDelay(ms = 600): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import DocumentDetail from "./routes/documents/$id";
 import { Layout, Menu, Badge, Avatar, Typography, Button } from "antd";
 import {
   FileTextOutlined,
@@ -21,6 +22,7 @@ type ActivePage = "dashboard" | "documents" | "upload";
 export default function App() {
   const [collapsed, setCollapsed] = useState(false);
   const [activePage, setActivePage] = useState<ActivePage>("dashboard");
+  const [selectedDocId, setSelectedDocId] = useState<string | null>(null);
 
   return (
     <Layout style={{ minHeight: "100vh", background: "#0f1117" }}>
@@ -59,7 +61,7 @@ export default function App() {
           </div>
           {!collapsed && (
             <Text style={{ color: "#475569", fontSize: 11 }}>
-              Document Ownership Platform
+              Document Management Platform
             </Text>
           )}
         </div>
@@ -124,11 +126,11 @@ export default function App() {
                 size={32}
                 style={{ background: "#3b82f6", fontSize: 12, fontWeight: 600 }}
               >
-                YA
+                JM
               </Avatar>
               {!collapsed && (
                 <Text style={{ color: "#94a3b8", fontSize: 13 }}>
-                  Youssuf Abdula
+                  James Mercer
                 </Text>
               )}
             </div>
@@ -137,9 +139,17 @@ export default function App() {
 
         {/* Conteúdo — renderiza a página ativa */}
         <Content style={{ padding: 24, overflow: "auto" }}>
-          {activePage === "dashboard" && <Dashboard />}
+          {activePage === "dashboard" && !selectedDocId && (
+            <Dashboard onSelectDocument={(id) => setSelectedDocId(id)} />
+          )}
+          {activePage === "dashboard" && selectedDocId && (
+            <DocumentDetail
+              id={selectedDocId}
+              onBack={() => setSelectedDocId(null)}
+            />
+          )}
           {activePage === "documents" && (
-            <div style={{ color: "#94a3b8" }}>Documents page — Hora 4</div>
+            <div style={{ color: "#94a3b8" }}>Documents page — Hora 5</div>
           )}
           {activePage === "upload" && (
             <div style={{ color: "#94a3b8" }}>Upload page — Hora 5</div>
@@ -149,4 +159,3 @@ export default function App() {
     </Layout>
   );
 }
-

@@ -98,7 +98,11 @@ function formatDate(iso: string): string {
   });
 }
 
-export default function Dashboard() {
+type DashboardProps = {
+  onSelectDocument: (id: string) => void;
+};
+
+export default function Dashboard({ onSelectDocument }: DashboardProps) {
   // Dois hooks — cada um com o seu estado de loading independente
   const { data: stats, isLoading: statsLoading } = useDashboardStats();
   const { data: documents, isLoading: docsLoading } = useDocuments();
@@ -126,12 +130,15 @@ export default function Dashboard() {
           </div>
           <div>
             <Text
+              onClick={() => onSelectDocument(record.id)}
               style={{
                 color: "#e2e8f0",
                 display: "block",
                 fontSize: 13,
                 fontWeight: 500,
+                cursor: "pointer",
               }}
+              className="doc-title-link"
             >
               {title}
             </Text>
