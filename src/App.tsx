@@ -1,4 +1,5 @@
 import { useState } from "react";
+import UploadPage from "./routes/upload";
 import DocumentDetail from "./routes/documents/$id";
 import { Layout, Menu, Badge, Avatar, Typography, Button } from "antd";
 import {
@@ -149,11 +150,9 @@ export default function App() {
             />
           )}
           {activePage === "documents" && (
-            <div style={{ color: "#94a3b8" }}>Documents page — Hora 5</div>
+            <div style={{ color: "#94a3b8" }}>Documents page — Hora 6</div>
           )}
-          {activePage === "upload" && (
-            <div style={{ color: "#94a3b8" }}>Upload page — Hora 5</div>
-          )}
+          {activePage === "upload" && <UploadPage />}
         </Content>
       </Layout>
     </Layout>
