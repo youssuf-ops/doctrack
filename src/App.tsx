@@ -12,7 +12,6 @@ import {
   BellOutlined,
 } from "@ant-design/icons";
 import Dashboard from "./routes/index";
-import "./App.css";
 
 const { Sider, Header, Content } = Layout;
 const { Text } = Typography;
