@@ -25,7 +25,6 @@ import type { UploadDocumentFormData } from "../schemas/document.schema";
 const { Title, Text } = Typography;
 const { TextArea } = Input;
 
-// Estado do formulário — tipado com o schema Zod
 type FormState = {
   title: string;
   description: string;
@@ -34,7 +33,6 @@ type FormState = {
   expiresAt: string | null;
 };
 
-// Erros por campo — Record com chaves dos campos do formulário
 type FormErrors = Partial<Record<keyof UploadDocumentFormData, string>>;
 
 export default function UploadPage() {
@@ -51,22 +49,19 @@ export default function UploadPage() {
 
   const { mutate: uploadDocument, isPending, isSuccess } = useUploadDocument();
 
-  // Valida campo individual em tempo real — chamado no onChange
   function validateField(name: keyof FormState, value: string) {
-    // Cria um objecto parcial para validar só este campo
     const partial = { ...form, [name]: value };
-
     const result = uploadDocumentSchema.safeParse(partial);
 
     if (!result.success) {
-      // Zod devolve um array de erros — encontramos o erro deste campo
-      const fieldError = result.error.errors.find((e) => e.path[0] === name);
+      const fieldError = result.error.issues.find(
+        (issue) => issue.path[0] === name,
+      );
       setErrors((prev) => ({
         ...prev,
         [name]: fieldError?.message ?? undefined,
       }));
     } else {
-      // Campo válido — remove o erro
       setErrors((prev) => ({ ...prev, [name]: undefined }));
     }
   }
@@ -79,21 +74,18 @@ export default function UploadPage() {
   function handleSubmit() {
     setSubmitted(true);
 
-    // Valida o formulário completo com Zod
     const result = uploadDocumentSchema.safeParse(form);
 
     if (!result.success) {
-      // Mapeia todos os erros de uma vez
       const allErrors: FormErrors = {};
-      result.error.errors.forEach((e) => {
-        const field = e.path[0] as keyof UploadDocumentFormData;
-        if (!allErrors[field]) allErrors[field] = e.message;
+      result.error.issues.forEach((issue) => {
+        const field = issue.path[0] as keyof UploadDocumentFormData;
+        if (!allErrors[field]) allErrors[field] = issue.message;
       });
       setErrors(allErrors);
       return;
     }
 
-    // Dados válidos — chama o hook de upload
     uploadDocument({
       title: result.data.title,
       description: result.data.description,
@@ -110,7 +102,6 @@ export default function UploadPage() {
     });
   }
 
-  // Calcula progresso do formulário — quantos campos obrigatórios estão preenchidos
   const filledFields = [form.title, form.description].filter(Boolean).length;
   const progress = Math.round((filledFields / 2) * 100);
 
@@ -146,7 +137,6 @@ export default function UploadPage() {
 
   return (
     <div style={{ maxWidth: 720, margin: "0 auto" }}>
-      {/* Header */}
       <div style={{ marginBottom: 24 }}>
         <Title level={3} style={{ color: "#e2e8f0", margin: 0 }}>
           Upload Document
@@ -156,7 +146,6 @@ export default function UploadPage() {
         </Text>
       </div>
 
-      {/* Barra de progresso */}
       <Card
         style={{
           background: "#131720",
@@ -186,7 +175,6 @@ export default function UploadPage() {
         />
       </Card>
 
-      {/* Formulário */}
       <Card
         style={{
           background: "#131720",
@@ -195,7 +183,6 @@ export default function UploadPage() {
         }}
       >
         <Form layout="vertical" requiredMark={false}>
-          {/* Título */}
           <Form.Item
             label={
               <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
@@ -227,7 +214,6 @@ export default function UploadPage() {
             />
           </Form.Item>
 
-          {/* Descrição */}
           <Form.Item
             label={
               <Text style={{ color: "#94a3b8", fontSize: 13 }}>
@@ -263,7 +249,6 @@ export default function UploadPage() {
             </Text>
           </Form.Item>
 
-          {/* Tags */}
           <Form.Item
             label={
               <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
@@ -286,7 +271,6 @@ export default function UploadPage() {
                 borderRadius: 8,
               }}
             />
-            {/* Preview das tags em tempo real */}
             {form.tags && (
               <div
                 style={{
@@ -318,7 +302,6 @@ export default function UploadPage() {
             )}
           </Form.Item>
 
-          {/* Shared With */}
           <Form.Item
             label={
               <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
@@ -345,7 +328,6 @@ export default function UploadPage() {
             />
           </Form.Item>
 
-          {/* Data de expiração */}
           <Form.Item
             label={
               <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
@@ -375,7 +357,6 @@ export default function UploadPage() {
             />
           </Form.Item>
 
-          {/* Aviso se tentou submeter com erros */}
           {submitted && Object.values(errors).some(Boolean) && (
             <Alert
               message="Please fix the errors above before submitting."
@@ -389,7 +370,6 @@ export default function UploadPage() {
             />
           )}
 
-          {/* Botão submit */}
           <Button
             type="primary"
             icon={<UploadOutlined />}
